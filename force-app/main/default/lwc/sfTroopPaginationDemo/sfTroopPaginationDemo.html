@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Pagination demo contact" icon-name="custom:custom63">
+        <div class="slds-var-m-around_medium">
+            <template if:true={visibleContacts}>
+                <template for:each={visibleContacts} for:item="contact">
+                    <p key={contact.Id}>{contact.Name}</p>
+                </template>
+            </template>
+            <div slot="footer" class="slds-var-m-vertical_medium">
+                <c-sf-troop-pagination records={totalContacts} onupdate={updateContactHandler}></c-sf-troop-pagination>
+            </div>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="Pagination demo Accounts" icon-name="custom:custom63">
+        <div class="slds-var-m-around_medium">
+            <template if:true={visibleAccounts}>
+                <template for:each={visibleAccounts} for:item="account">
+                    <p key={account.Id}>{account.Name}</p>
+                </template>
+            </template>
+            <div slot="footer" class="slds-var-m-vertical_medium">
+                <c-sf-troop-pagination records={totalAccounts} record-size="6" onupdate={updateAccountHandler}></c-sf-troop-pagination>
+            </div>
+        </div>
+    </lightning-card>
+</template>

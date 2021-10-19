@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="Portfolio Sites" icon-name="custom:custom63">
+    <div class="slds-align_left">        
+            <!-- <div class="slds-var-p-horizontal_small">                
+                <lightning-input 
+                    type="text" 
+                    value={searchValue} 
+                    label="Tower Number" 
+                    onchange={searchKeyword}
+                    class="slds-size_3-of-12">
+                </lightning-input>
+                <lightning-button 
+                    label="Search" 
+                    onclick={handleSearchKeyword}
+                    icon-name="utility:search">
+                </lightning-button>                                
+            </div>                     -->
+        <template if:true={visibleSites}>
+            <lightning-datatable
+                key-field="Id"
+                data={visibleSites}
+                columns={columns}
+                onsave={handleSave}
+                draft-values={draftValues}>
+            </lightning-datatable>
+        </template>
+        <template if:true={site.error}>
+            <!-- handle Apex error -->
+        </template>
+    </div>     
+    <div slot="footer" class="slds-var-m-vertical_medium">
+        <c-pagination-component records={totalSites} onupdate={updateHandler}></c-pagination-component>
+    </div>
+    </lightning-card>
+</template>
+

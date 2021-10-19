@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Portfolio Sites v2" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <template if:true={site.data}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={site.data}
+                    columns={columns}
+                    onsave={handleSave}                    
+                    draft-values={draftValues}>
+                </lightning-datatable>
+            </template>
+            <template if:true={site.error}>
+                <!-- handle Apex error -->
+            </template>
+        </div>
+    </lightning-card>
+</template>

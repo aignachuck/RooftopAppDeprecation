@@ -1,0 +1,3 @@
+<apex:page standardController="Real_Estate_Portfolio__c" extensions="RooftopPortfolioCloneController" action="{!PortfolioClone}">
+
+</apex:page>
