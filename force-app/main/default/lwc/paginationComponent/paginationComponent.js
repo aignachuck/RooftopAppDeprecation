@@ -1,5 +1,7 @@
 import { LightningElement, api} from 'lwc';
 
+//Pagination component used to parse out the number of records shown in the screen at a time. It does this by slicing the total number of records
+//and displaying the correct slice based on the current page of the UI.
 export default class PaginationComponent extends LightningElement {
 
     currentPage = 1;

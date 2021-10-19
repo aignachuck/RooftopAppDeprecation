@@ -1,5 +1,7 @@
 public inherited sharing class PortfolioSiteController {    
     
+
+    //Used to pull Sites associated with a Portfolio
     @AuraEnabled(cacheable=true)
     public static List<Site__c> getSites(String portfolioId){                           
                                                                            
@@ -22,6 +24,7 @@ public inherited sharing class PortfolioSiteController {
                         Name ASC];
     }
    
+    //Used with the defunct Search feature to search for an entered String
     @AuraEnabled(cacheable=true)    
     public static List<Site__c> searchedSites(String portfolioId, String searchKey){
         system.debug('Portfolio Id is: ' + portfolioId);
@@ -47,6 +50,7 @@ public inherited sharing class PortfolioSiteController {
         return returnedSites;
     }
     
+    //Used with Save function to update the Sites that were edited in the list
     @AuraEnabled
     public static string updateSites(Object data) {
         List<Site__c> sitesForUpdate = (List<Site__c>) JSON.deserialize(
