@@ -1,7 +1,9 @@
 public with sharing class RooftopPortfolioCloneController {
     
+    //Creating the Portfolio object variable
     public Real_Estate_Portfolio__c portfolio {get; set;}
 
+    //Creating a controller and assigning the Standard Controller
     private ApexPages.StandardController ctrl;
 
     public RooftopPortfolioCloneController(ApexPages.StandardController controller) {
@@ -11,13 +13,17 @@ public with sharing class RooftopPortfolioCloneController {
 
     public PageReference PortfolioClone() {
 
+        //This retrieves the Portfolio ID for the Portfolio being viewed
         Id portfolioId = ctrl.getId();
 
+        //Retrieves the record type by ID for the Real Estate Portfolio
         Id noteRecordTypeId = Schema.Sobjecttype.Real_Estate_Portfolio__c.getRecordTypeInfosByDeveloperName().get('Portfolio_Notes').getRecordTypeId();
         system.debug('Portfolio Notes RecordTypeId is: ' + noteRecordTypeId);
 
+        //Creating a variable to house the list of Portfolio Notes
         List<Real_Estate_Portfolio__c> notesList = new List<Real_Estate_Portfolio__c>();        
 
+        //This SOQL statement retrieves the current portfolio using the ID we retrieved above, then pulls all of the field data
         Real_Estate_Portfolio__c vREP = [SELECT Id, 
                                                 Name, 
                                                 Relationship_Name__c, 
@@ -87,6 +93,7 @@ public with sharing class RooftopPortfolioCloneController {
                                                 Bill_Owner__c                                                
                                                 FROM Real_Estate_Portfolio__c WHERE Id = :portfolioId];       
 
+        //This SOQL is retriving all of the associated Portfolio Notes that are linked to the Portfolio, using the Portfolio ID we retrieved above.                                        
         notesList = [SELECT Id, 
                             Name, 
                             Portfolio_Note_Text__c, 
@@ -94,9 +101,11 @@ public with sharing class RooftopPortfolioCloneController {
                             Real_Estate_Portfolio_Notes__r.Id, 
                             RecordTypeId FROM Real_Estate_Portfolio__c WHERE Real_Estate_Portfolio_Notes__r.Id = :vREP.Id AND  RecordTypeId = :noteRecordTypeId];
 
+        //This is the action to Clone and then Insert the Portfolio that we pulled above                 
         Real_Estate_Portfolio__c clonedREP = vREP.clone(false, false, false, false); 
         insert clonedREP; 
         
+        //Here we retrive the Portfolio we just created and get the Portfolio ID
         Real_Estate_Portfolio__c newREP = [SELECT Id, 
                                                   Name, 
                                                   Relationship_Name__c, 
@@ -165,14 +174,17 @@ public with sharing class RooftopPortfolioCloneController {
                                                   Bill_Owner__c
                                                   FROM Real_Estate_Portfolio__c WHERE Id = :clonedREP.Id];
 
+        //Create a new, empty List of Portfolios so we can populate it with the Notes                                          
         List<Real_Estate_Portfolio__c> clonedNotes = new List<Real_Estate_Portfolio__c>(); 
         
+        //Loop through all of the Notes in the original list of Notes from the original Portfolio, clone each Note, add it to the empty List "clonedNotes", then insert those Notes
         for (Real_Estate_Portfolio__c vNote : notesList) {
             Real_Estate_Portfolio__c clonedNote = vNote.clone(false, false, false, false);
             clonedNote.Real_Estate_Portfolio_Notes__c = newREP.Id;
             clonedNotes.add(clonedNote);
         }
 
+        //Insert the Cloned Notes and then return the Page for the new, cloned Portfolio
         insert clonedNotes;
         return new PageReference('/' + clonedREP.Id);
     }
