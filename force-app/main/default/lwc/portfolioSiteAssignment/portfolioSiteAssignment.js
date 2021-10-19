@@ -7,7 +7,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import searchedSites from '@salesforce/apex/PortfolioSiteController.searchedSites';
 
 
-
+//This is the list of fields that show in the Portfolio App
 const COLS = [
     { label: 'Tower Number', fieldName: 'Name'},
     { label: 'Tower Name', fieldName: 'Tower_Name__c' },
@@ -30,6 +30,7 @@ export default class PortfolioSiteAssignment extends LightningElement {
     @wire(getSites, { portfolioId: '$recordId' })
     site;  
 
+    //wire service is used to obtain and manipulate data inside the application
     @wire(getSites, {portfolioId: '$recordId'})
     wiredSites({error, data}){
         if(data){
@@ -41,7 +42,7 @@ export default class PortfolioSiteAssignment extends LightningElement {
         }
     }    
    
-
+    //Used with search feature. Can be disabled.
     searchKeyword(event){
         this.searchValue = event.detail.value;        
         console.log('Search Value is: ' + this.searchValue);
@@ -49,6 +50,7 @@ export default class PortfolioSiteAssignment extends LightningElement {
         this.searchId = this.recordId;                
     }
 
+    //Used with Search
     handleSearchKeyword(){
         if(this.searchValue !== ''){
             console.log('Search Value line 64 is: ' + this.searchValue);
@@ -77,6 +79,7 @@ export default class PortfolioSiteAssignment extends LightningElement {
 
     }
     
+    //This is the heart of the app. Handles the saves, sends a toast message and refreshes the list of Sites and their values.
     async handleSave(event) {
 
         const updatedFields = event.detail.draftValues;
